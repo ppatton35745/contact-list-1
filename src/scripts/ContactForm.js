@@ -3,67 +3,58 @@ const $ = require("jquery")
 const contactCollectionModule = require("./ContactCollection")
 const contactListModule = require("./ContactList")
 
-const addNewContact = () => {
-  const newContactName = $(".name-form-field").val()
-  const newContactPhone = $(".phone-form-field").val()
-  const newContactAddr = $(".addr-form-field").val()
-  console.log("add button clicked", newContactName, newContactPhone, newContactAddr);
-  contactCollectionModule.postContact(newContactName, newContactPhone, newContactAddr)
-  .then((response) => {
-    console.log("response", response)
-    contactListModule.buildContactList()
-  })
-}
-
 const contactForm = Object.create({}, {
-  buildContactForm: {
-    value: function() {
-      const formArticle = document.createElement("article")
 
-      const nameSection = document.createElement("section")
+  buildFormSection: {
+    value: function (sectionName, sectionInputType, sectionInputClass, InputVal) {
 
-      const nameLabel = document.createElement("label")
-      nameLabel.textContent = "Name: "
-      nameSection.appendChild(nameLabel)
+      const section = $("<section>")
+      const label = $("<label>").text(`${sectionName}: `);
+      const field = $("<input>").attr("type", sectionInputType).addClass(sectionInputClass);
+      if (InputVal) {
+        field.val(InputVal);
+      }
+      section.appendChild(nameLabel);
+      section.appendChild(nameField);
+      return section;
+    }
+  },
 
-      const nameField = document.createElement("input")
-      nameField.setAttribute("type", "text")
-      nameField.className = "name-form-field"
-      nameSection.appendChild(nameField)
+  buildNewContactForm: {
+    value: function () {
 
-      formArticle.appendChild(nameSection)
+      const formArticle = $("<article>")
 
-      const phoneSection = document.createElement("section")
+      const nameSection = this.buildFormSection("Name", "text", "name-form-field");
+      const phoneSection = this.buildFormSection("Phone", "tel", "phone-form-field");
+      const addrSection = this.buildFormSection("Address", "text", "addr-form-field");
+      const addButton = $("<button>").text("Add").on("click", addNewContact); //contact.js
 
-      const phoneLabel = document.createElement("label")
-      phoneLabel.textContent = "Phone: "
-      phoneSection.appendChild(phoneLabel)
+      formArticle.appendChild(nameSection);
+      formArticle.appendChild(phoneSection);
+      formArticle.appendChild(addrSection);
+      formArticle.appendChild(addButton);
 
-      const phoneField = document.createElement("input")
-      phoneField.setAttribute("type", "tel")
-      phoneField.className = "phone-form-field"
-      phoneSection.appendChild(phoneField)
+      return formArticle;
+    }
+  },
 
-      formArticle.appendChild(phoneSection)
+  buildEditContactForm: {
+    value: function (contact) {
 
-      const addrSection = document.createElement("section")
+      const editContactArticle = $("<article>");
 
-      const addrLabel = document.createElement("label")
-      addrLabel.textContent = "Address: "
-      addrSection.appendChild(addrLabel)
+      const nameSection = this.buildFormSection("Name", "text", "name-form-field", contact.name);
+      const phoneSection = this.buildFormSection("Phone", "tel", "phone-form-field", contact.phone);
+      const addrSection = this.buildFormSection("Address", "text", "addr-form-field", contact.address);
+      const editButton = $("<button>").text("Update").attr("id", `${contact.id}`).on("click", editExistingContact); //contact.js
 
-      const addrFieldOne = document.createElement("input")
-      addrFieldOne.setAttribute("type", "text")
-      addrFieldOne.className = "addr-form-field"
-      addrSection.appendChild(addrFieldOne)
-      formArticle.appendChild(addrSection)
+      editContactArticle.appendChild(nameSection)
+      editContactArticle.appendChild(phoneSection)
+      editContactArticle.appendChild(addrSection)
+      editContactArticle.appendChild(editButton)
 
-      const addButton = document.createElement("button")
-      addButton.textContent = "Add"
-      addButton.addEventListener("click", addNewContact)
-      formArticle.appendChild(addButton)
-
-      document.querySelector("#display-container").appendChild(formArticle)
+      return editContactArticle
     }
   }
 })
