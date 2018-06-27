@@ -1,7 +1,6 @@
 const $ = require("jquery")
 
 const contactCollectionModule = require("./ContactCollection")
-const contactListModule = require("./ContactList")
 
 const contactForm = Object.create({}, {
 
@@ -56,7 +55,18 @@ const contactForm = Object.create({}, {
 
       return editContactArticle
     }
+  },
+
+  openEditContactForm: {
+    value: function () {
+      const contactId = event.currentTarget.parentNode.id
+      ContactCollectionModule.getContact(contactId)
+      .then((response) => {
+        buildEditContactForm(response)
+      })
+    }
   }
+
 })
 
 module.exports = contactForm

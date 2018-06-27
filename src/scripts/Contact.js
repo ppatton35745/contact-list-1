@@ -20,14 +20,7 @@ const deleteContact = () => {
     })
 }
 
-const openEditContactForm = () => {
-  const contactId = event.currentTarget.parentNode.id
-  ContactCollectionModule.getContact(contactId)
-    .then((response) => {
-      console.log("contact to be edited", response.phone);
-      buildEditContactForm(response)
-    })
-}
+
 
 const editExistingContact = () => {
   const contactId = event.currentTarget.id

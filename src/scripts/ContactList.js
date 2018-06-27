@@ -1,4 +1,5 @@
 const contactCollectionModule = require("./ContactCollection")
+const contactFormModule = require("./ContactForm")
 
 const contactList = Object.create({}, {
   "createContactDOMitem": {
@@ -7,7 +8,7 @@ const contactList = Object.create({}, {
       const contactSection = $("<section>").attr("id", `${contact.id}`);
 
       const deleteButton = $("<button>").text("Delete").on("click", deleteContact);
-      const editButton = $("<button>").text("Edit").on("click", openEditContactForm);
+      const editButton = $("<button>").text("Edit").on("click", contactFormModule.openEditContactForm());
 
       contactSection.appendChild(deleteButton)
       contactSection.appendChild(editButton)
