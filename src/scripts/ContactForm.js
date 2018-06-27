@@ -1,6 +1,7 @@
 const $ = require("jquery")
 
-const contactCollectionModule = require("./ContactCollection")
+//const contactCollectionModule = require("./ContactCollection")
+//const contactModule = require("./Contact")
 
 const contactForm = Object.create({}, {
 
@@ -13,8 +14,8 @@ const contactForm = Object.create({}, {
       if (InputVal) {
         field.val(InputVal);
       }
-      section.appendChild(nameLabel);
-      section.appendChild(nameField);
+      section.append(label);
+      section.append(field);
       return section;
     }
   },
@@ -27,12 +28,14 @@ const contactForm = Object.create({}, {
       const nameSection = this.buildFormSection("Name", "text", "name-form-field");
       const phoneSection = this.buildFormSection("Phone", "tel", "phone-form-field");
       const addrSection = this.buildFormSection("Address", "text", "addr-form-field");
-      const addButton = $("<button>").text("Add").on("click", addNewContact); //contact.js
+      const addButton = $("<button>").text("Add");
 
-      formArticle.appendChild(nameSection);
-      formArticle.appendChild(phoneSection);
-      formArticle.appendChild(addrSection);
-      formArticle.appendChild(addButton);
+
+
+      formArticle.append(nameSection);
+      formArticle.append(phoneSection);
+      formArticle.append(addrSection);
+      formArticle.append(addButton);
 
       return formArticle;
     }
@@ -46,26 +49,18 @@ const contactForm = Object.create({}, {
       const nameSection = this.buildFormSection("Name", "text", "name-form-field", contact.name);
       const phoneSection = this.buildFormSection("Phone", "tel", "phone-form-field", contact.phone);
       const addrSection = this.buildFormSection("Address", "text", "addr-form-field", contact.address);
-      const editButton = $("<button>").text("Update").attr("id", `${contact.id}`).on("click", editExistingContact); //contact.js
+      const editButton = $("<button>").text("Update").attr("id", `${contact.id}`).on("click", contactModule.editExistingContact); //contact.js
 
-      editContactArticle.appendChild(nameSection)
-      editContactArticle.appendChild(phoneSection)
-      editContactArticle.appendChild(addrSection)
-      editContactArticle.appendChild(editButton)
+      editContactArticle.append(nameSection)
+      editContactArticle.append(phoneSection)
+      editContactArticle.append(addrSection)
+      editContactArticle.append(editButton)
 
       return editContactArticle
     }
   },
 
-  openEditContactForm: {
-    value: function () {
-      const contactId = event.currentTarget.parentNode.id
-      ContactCollectionModule.getContact(contactId)
-      .then((response) => {
-        buildEditContactForm(response)
-      })
-    }
-  }
+
 
 })
 

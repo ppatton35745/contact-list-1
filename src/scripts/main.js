@@ -1,7 +1,8 @@
-const contactForm = require("./ContactForm")
-const contactList = require("./ContactList")
-console.log("contact form module", contactForm);
+const contact = require("./Contact")
+const $ = require("jquery")
 
 
-contactForm.buildContactForm()
-contactList.buildContactList()
+const newContactForm = contact.buildNewContactForm();
+$("#display-container").append(newContactForm);
+const contactList = contact.buildContactList();
+$("#display-container").append(contactList);

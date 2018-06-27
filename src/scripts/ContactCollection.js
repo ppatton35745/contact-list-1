@@ -2,7 +2,7 @@ const $ = require("jquery")
 
 const contactCollection = Object.create({}, {
   "postContact": {
-    value: function(name, phone, address) {
+    value: function (name, phone, address) {
       return $.ajax({
         url: "http://localhost:3000/contacts",
         method: "POST",
@@ -15,12 +15,12 @@ const contactCollection = Object.create({}, {
     }
   },
   "getContacts": {
-    value: function() {
+    value: function () {
       return $.ajax("http://localhost:3000/contacts")
     }
   },
   "deleteContact": {
-    value: function(id){
+    value: function (id) {
       return $.ajax({
         url: `http://localhost:3000/contacts/${id}`,
         method: "DELETE"
@@ -28,12 +28,12 @@ const contactCollection = Object.create({}, {
     }
   },
   "getContact": {
-    value: function(id) {
+    value: function (id) {
       return $.ajax(`http://localhost:3000/contacts/${id}`)
     }
   },
   "putContact": {
-    value: function(id, name, phone, address){
+    value: function (id, name, phone, address) {
       return $.ajax({
         url: `http://localhost:3000/contacts/${id}`,
         method: "PUT",

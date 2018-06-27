@@ -1,45 +1,43 @@
-const contactCollectionModule = require("./ContactCollection")
-const contactFormModule = require("./ContactForm")
+const $ = require("jquery")
 
 const contactList = Object.create({}, {
+
   "createContactDOMitem": {
     value: function (contact) {
 
       const contactSection = $("<section>").attr("id", `${contact.id}`);
 
-      const deleteButton = $("<button>").text("Delete").on("click", deleteContact);
-      const editButton = $("<button>").text("Edit").on("click", contactFormModule.openEditContactForm());
-
-      contactSection.appendChild(deleteButton)
-      contactSection.appendChild(editButton)
+      const deleteButton = $("<button>").text("Delete")
+      const editButton = $("<button>").text("Edit")
 
       for (let prop in contact) {
         if (prop !== "id") {
-          const paraElement = $("<p>").text(`${key}: ${contact[key]}`)
-          contactSection.appendChild(paraElement)
+          const paraElement = $("<p>").text(`${prop}: ${contact[prop]}`)
+          contactSection.append(paraElement)
         }
       }
+
+      contactSection.append(deleteButton)
+      contactSection.append(editButton)
 
       return contactSection
     }
   },
 
   "buildContactList": {
-    value: function () {
-      contactCollectionModule.getContacts()
-        .then((response) => {
-          // IF contacts list article exists, delete it
-          const currentListRef = document.querySelector(".list-contacts-article")
-          if (currentListRef) {
-            currentListRef.remove()
-          }
-          // Build
-          const contactsArticle = $("article").addClass("list-contacts-article");
-          response.forEach(contact => {
-            contactsArticle.appendChild(this.createContactDOMitem(contact));
-          });
-          $("#display-container").appendChild(contactsArticle);
-        })
+    value: function (response) {
+
+      // IF contacts list article exists, delete it
+      const currentListRef = document.querySelector(".list-contacts-article")
+      if (currentListRef) {
+        currentListRef.remove()
+      }
+      // Build
+      const contactsArticle = $("article").addClass("list-contacts-article");
+      response.forEach(contact => {
+        contactsArticle.append(this.createContactDOMitem(contact));
+      });
+      return contactsArticle;
     }
   }
 
